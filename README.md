@@ -5,6 +5,8 @@ Discord bot to react with rolled results using the [Quixotic SRD](https://wuderp
 
 Built with Python 3.10.2
 
+Use the code at your own discretion
+
 Use the Discord Developer Portal to add a new application and enter the OAuth2 token in the config/Botconfig.ini 
 
 ## Features
