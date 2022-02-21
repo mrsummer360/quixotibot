@@ -1,7 +1,7 @@
 # Quixotibot
 
 ## General Information
-Discord bot to react with rolled results using Quixotic SRD by [wuderpg](https://wuderpg.itch.io/) ( https://wuderpg.itch.io/quixotic )
+Discord bot to react with rolled results using the [Quixotic SRD](https://wuderpg.itch.io/quixotic) by [wuderpg](https://wuderpg.itch.io/)
 
 Built with Python 3.10.2
 
