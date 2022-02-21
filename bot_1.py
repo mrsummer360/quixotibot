@@ -30,14 +30,16 @@ class MyClient(discord.Client):
             cmdarg = '{0.content}'.format(message)[cmdEnd+1:]
             respText = ''
             rollresult = 0
+            numberOfDies = 0
             for c in cmdarg:
                 if c.isalpha():                    
                     if len(respText) > 0: 
                         respText += " + "
+                    numberOfDies += 1
                     singleresult = random.randrange(1,useDie+1)
                     rollresult += singleresult
                     respText += str(singleresult)
-            await message.channel.send('Rolled: ' + respText + " = " + str(rollresult))
+            await message.channel.send('_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_')
 
 client = MyClient()
 config = configparser.ConfigParser()
