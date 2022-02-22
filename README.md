@@ -11,6 +11,8 @@ Use the code at your own risk
 Use the [Discord Developer Portal](https://discord.com/developers/applications) to add a new application with a bot, generate a OAuth2 Token, enter the OAuth2 token in the config/Botconfig.ini and use the generated bot-URL to invite the bot to your server. 
 The Application currently needs to be able to read and send messages
 
+To restrict the bot from posting in all channels, remove channel visibility for it from all undesired channels. 
+
 ## Features
 Once the bot has been invited to your Discord Server you can use the following commands to trigger a response containing your detailed roll (because lets be honest, while it's not as great to here the dice go clickety-clack at least you can see your huge number of dice rolls) and the sum of all rolls. The bot includes configuration of a role, that is allowed to use the commands, check for this roll can also be disabled. 
 
