@@ -8,7 +8,7 @@ Built with Python 3.10.2, requires discord.py library (See [documentation](https
 Use the code at your own risk
 
 ## How to install
-Use the [Discord Developer Portal](https://discord.com/developers/applications) to add a new application, generate a OAuth2 Token, enter the OAuth2 token in the config/Botconfig.ini and use the generated bot-URL to invite the bot to your server. 
+Use the [Discord Developer Portal](https://discord.com/developers/applications) to add a new application with a bot, generate a OAuth2 Token, enter the OAuth2 token in the config/Botconfig.ini and use the generated bot-URL to invite the bot to your server. 
 The Application currently needs to be able to read and send messages
 
 ## Features
