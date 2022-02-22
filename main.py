@@ -31,7 +31,9 @@ class MyClient(discord.Client):
             cmdarg = '{0.content}'.format(message)[cmdEnd+1:]
 
             if cmd == 'rnd':
-                sendmessage = self.rollrandom(cmdarg)                
+                sendmessage = self.rollrandom(cmdarg)  
+            elif cmd == 'rlm':
+                sendmessage = self.rlmroll(cmdarg)              
             else:
                 if cmd.isdigit(): useDie = int(cmd)
                
@@ -72,6 +74,62 @@ class MyClient(discord.Client):
         result += result.join("{}d{}, ".format(x,y) for x, y in zip(counts,randomdice))
         result = '_Rolled ' + result[:-2] + ': ' + respText + ' = ' + str(rollresult) + '_'
         return result
+
+    def rlmroll(self, text):
+        letterdict = {
+            "a":4,
+            "b":12,
+            "c":-8,
+            "d":-6,
+            "e":4,
+            "f":10,
+            "g":10,
+            "h":6,
+            "i":4,
+            "j":-20,
+            "k":12,
+            "l":8,
+            "m":8,
+            "n":-4,
+            "o":4,
+            "p":10,
+            "q":-20,
+            "r":6,
+            "s":-4,
+            "t":-4,
+            "u":-8,
+            "v":-12,
+            "w":-10,
+            "x":20,
+            "y":10,
+            "z":20
+        }
+        respText = ''
+        numberOfDies = 0
+        rollresult = 0
+        for c in text:
+            if c.isalpha():                          
+                useDie = letterdict[c.casefold()]          
+                if len(respText) == 0 and useDie < 0:
+                    respText = " - "
+                elif len(respText) > 0 and useDie < 0: 
+                    respText += " - "
+                elif len(respText) > 0 and useDie > 0:
+                    respText += " + "
+                numberOfDies += 1
+                if useDie > 0:
+                    singleresult = random.randrange(1,useDie+1)
+                    rollresult += singleresult
+                else:  
+                    singleresult = random.randrange(1,abs(useDie)+1)
+                    rollresult -= singleresult
+                respText += str(singleresult)
+
+        respText = "_Roll Result: " + respText + " = " + str(rollresult) + "_"
+
+        return respText
+
+
 
 
 
