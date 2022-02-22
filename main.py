@@ -5,6 +5,7 @@ import configparser
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}'.format(self.user))
+        await self.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='!qd or !qd<diceSize>'))
 
         
     async def on_message(self,message):

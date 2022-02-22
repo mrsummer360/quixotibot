@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # private config file
-/config/Botconfig.ini
+config/Botconfig.ini
