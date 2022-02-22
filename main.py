@@ -3,15 +3,21 @@ import random
 import configparser
 
 class MyClient(discord.Client):
+    
     async def on_ready(self):
+        # Starts bot and set Activity message
         print('Logged on as {0}'.format(self.user))
         await self.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='!qd or !qd<diceSize>'))
 
         
     async def on_message(self,message):
+        # Reads incoming messages and rolls lots of dice
         text = '{0.content}'.format(message)
+
         # print('Message from {0.author}: {0.content}'.format(message))
 
+        # Check if command should be listened to
+        # Currently checks for the role specified in Botconfig.ini, if Checkrole flag is set
         execqd = False
         if config['DiscordConfig']['CheckRole'] != 'yes':
             execqd = True
@@ -22,19 +28,23 @@ class MyClient(discord.Client):
             if role in user.roles:
                 execqd = True            
 
-
+        # Listener for !qd command
         if text.startswith('!qd') and execqd:            
+            # Check for end of command
             cmdEnd = text.find(" ")
             cmd = '{0.content}'.format(message)[3:cmdEnd]
 
+            # Set Default Die and get additional command details             
             useDie = int(config['Defaults']['defaultDie'])
             cmdarg = '{0.content}'.format(message)[cmdEnd+1:]
 
+            # Execute rolling routines, see routine definition for further information
             if cmd == 'rnd':
                 sendmessage = self.rollrandom(cmdarg)  
             elif cmd == 'rlm':
                 sendmessage = self.rlmroll(cmdarg)              
             else:
+                # Default roll, use one sort of dice, either specified by the command or the default die
                 if cmd.isdigit(): useDie = int(cmd)
                
                 respText = ''
@@ -49,12 +59,14 @@ class MyClient(discord.Client):
                         rollresult += singleresult
                         respText += str(singleresult)
                 sendmessage = '_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_'
-        
+
+            # Send message to the channel, the request was sent to
             await message.channel.send(sendmessage)
 
     def rollrandom(self, text):
-        randomdice = [4,6,8,10,12,20]        
-        counts = [0,0,0,0,0,0]
+        #Rolling routine to use a random die for each role        
+        randomdice = [4,6,8,10,12,20]        # Add or remove values to add other dice-face values
+        counts = [0,0,0,0,0,0]               # Dicecounters for the result text, length must be the same as randomdice above
         respText = ''
         numberOfDies = 0
         rollresult = 0
@@ -76,6 +88,8 @@ class MyClient(discord.Client):
         return result
 
     def rlmroll(self, text):
+        # Special rolling routine for "Revenge of the Lettermasters" 
+        # Each letter is assigned a dice-size value. Values can be edited using this dictionary
         letterdict = {
             "a":4,
             "b":12,
@@ -104,9 +118,11 @@ class MyClient(discord.Client):
             "y":10,
             "z":20
         }
+
         respText = ''
         numberOfDies = 0
         rollresult = 0
+        
         for c in text:
             if c.isalpha():                          
                 useDie = letterdict[c.casefold()]          
@@ -134,8 +150,9 @@ class MyClient(discord.Client):
 
 
         
-
+# Initialize Bot Client
 client = MyClient()
 config = configparser.ConfigParser()
+# TODO Make configlocation call parameter
 config.read('config\Botconfig.ini')
 client.run(config['Security']['oauth2'])
