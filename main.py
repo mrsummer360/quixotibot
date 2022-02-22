@@ -71,7 +71,6 @@ class MyClient(discord.Client):
         result = ''
         result += result.join("{}d{}, ".format(x,y) for x, y in zip(counts,randomdice))
         result = '_Rolled ' + result[:-2] + ': ' + respText + ' = ' + str(rollresult) + '_'
-        # return '_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_'
         return result
 
 
