@@ -10,7 +10,7 @@ class MyClient(discord.Client):
         
     async def on_message(self,message):
         text = '{0.content}'.format(message)
-        print('Message from {0.author}: {0.content}'.format(message))
+        # print('Message from {0.author}: {0.content}'.format(message))
 
         execqd = False
         if config['DiscordConfig']['CheckRole'] != 'yes':
@@ -26,21 +26,57 @@ class MyClient(discord.Client):
         if text.startswith('!qd') and execqd:            
             cmdEnd = text.find(" ")
             cmd = '{0.content}'.format(message)[3:cmdEnd]
+
             useDie = int(config['Defaults']['defaultDie'])
-            if cmd.isdigit(): useDie = int(cmd)
             cmdarg = '{0.content}'.format(message)[cmdEnd+1:]
-            respText = ''
-            rollresult = 0
-            numberOfDies = 0
-            for c in cmdarg:
-                if c.isalpha():                    
-                    if len(respText) > 0: 
-                        respText += " + "
-                    numberOfDies += 1
-                    singleresult = random.randrange(1,useDie+1)
-                    rollresult += singleresult
-                    respText += str(singleresult)
-            await message.channel.send('_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_')
+
+            if cmd == 'rnd':
+                sendmessage = self.rollrandom(cmdarg)                
+            else:
+                if cmd.isdigit(): useDie = int(cmd)
+               
+                respText = ''
+                rollresult = 0
+                numberOfDies = 0
+                for c in cmdarg:
+                    if c.isalpha():                    
+                        if len(respText) > 0: 
+                            respText += " + "
+                        numberOfDies += 1
+                        singleresult = random.randrange(1,useDie+1)
+                        rollresult += singleresult
+                        respText += str(singleresult)
+                sendmessage = '_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_'
+        
+            await message.channel.send(sendmessage)
+
+    def rollrandom(self, text):
+        randomdice = [4,6,8,10,12,20]        
+        counts = [0,0,0,0,0,0]
+        respText = ''
+        numberOfDies = 0
+        rollresult = 0
+        for c in text:
+            if c.isalpha():          
+                useDie = random.choice(randomdice)          
+                if len(respText) > 0: 
+                    respText += " + "
+                numberOfDies += 1
+                singleresult = random.randrange(1,useDie+1)
+                counts[randomdice.index(useDie)] += 1
+                rollresult += singleresult
+                respText += str(singleresult)
+
+
+        result = ''
+        result += result.join("{}d{}, ".format(x,y) for x, y in zip(counts,randomdice))
+        result = '_Rolled ' + result[:-2] + ': ' + respText + ' = ' + str(rollresult) + '_'
+        # return '_Rolled ' + str(numberOfDies) + 'd' + str(useDie) + ': ' + respText + " = " + str(rollresult) + '_'
+        return result
+
+
+
+        
 
 client = MyClient()
 config = configparser.ConfigParser()
